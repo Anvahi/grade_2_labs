@@ -15,8 +15,9 @@ struct tree{
     node *root = nullptr;
 };
 
-int insert (node *tr, int n){ //wtf
-    if (n > tr->data){
+int insert (node *tr, int n){
+    int r = rand() %2; //просто подряд////метод обхода в ширину
+    if (r == 0){
         if (tr->left == nullptr){
             node *tmp = new node;
             tmp->data = n;
@@ -24,7 +25,7 @@ int insert (node *tr, int n){ //wtf
         }
         else insert(tr->left, n);
     }
-    else if (n < tr->data){
+    else if (r == 1){
         if (tr->right == nullptr){
             node *tmp = new node;
             tmp->data = n;

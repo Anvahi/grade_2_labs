@@ -7,3 +7,12 @@ C:\Users\Anvahi\source\repos\vplr9\vplr9\obj\Debug\vplr9.Properties.Resources.re
 C:\Users\Anvahi\source\repos\vplr9\vplr9\obj\Debug\vplr9.csproj.GenerateResource.cache
 C:\Users\Anvahi\source\repos\vplr9\vplr9\obj\Debug\vplr9.exe
 C:\Users\Anvahi\source\repos\vplr9\vplr9\obj\Debug\vplr9.pdb
+C:\Users\polyh\grade_2_labs\vplr9\vplr9\bin\Debug\vplr9.exe.config
+C:\Users\polyh\grade_2_labs\vplr9\vplr9\bin\Debug\vplr9.exe
+C:\Users\polyh\grade_2_labs\vplr9\vplr9\bin\Debug\vplr9.pdb
+C:\Users\polyh\grade_2_labs\vplr9\vplr9\obj\Debug\vplr9.csprojAssemblyReference.cache
+C:\Users\polyh\grade_2_labs\vplr9\vplr9\obj\Debug\vplr9.Form1.resources
+C:\Users\polyh\grade_2_labs\vplr9\vplr9\obj\Debug\vplr9.Properties.Resources.resources
+C:\Users\polyh\grade_2_labs\vplr9\vplr9\obj\Debug\vplr9.csproj.GenerateResource.cache
+C:\Users\polyh\grade_2_labs\vplr9\vplr9\obj\Debug\vplr9.exe
+C:\Users\polyh\grade_2_labs\vplr9\vplr9\obj\Debug\vplr9.pdb
