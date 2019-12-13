@@ -48,6 +48,8 @@ public:
 
     Complex operator/(const Complex &a);
 
+    Complex operator=(const Complex &a);
+
     ~Complex() = default;
 };
 
@@ -82,65 +84,54 @@ Complex Complex::operator/(const Complex &a) {
     return temp;
 }
 
-class Vector : Complex {
+Complex Complex::operator=(const Complex &a) {
+    val = a.val;
+    img = a.img;
+    return (*this);
+}
+
+class Vector {
 private:
     Complex *vec;
-    static int N;
 public:
-    Vector(int N) {
+    static int N;
+    explicit Vector(int N = 2) {
         this->vec = new Complex[N];
     }
 
-    void set_N(int n) {
-        N = n;
-    }
-
-    void set_vec1(Complex t, int i){
-        vec[i] = t;
+    void set_vec(Complex t, int i){
+        this->vec[i] = t;
     }
 
     friend std::ostream &operator<<(std::ostream &out, const Vector &A);
 
-    Complex operator+(const Vector &A);
+    Vector operator+(const Vector &A);
 
     Vector operator-(const Vector &A);
-
-    Vector operator*(const Vector &A);
-
-    Vector operator/(const Vector &A);
 
     ~Vector() = default;
 };
 
 std::ostream &operator<<(std::ostream &out, const Vector &A) {
-    out << "";
+    for (int i = 0; i < Vector::N; i++) {
+        out << A.vec[i] << "\n";
+    }
     return out;
 }
 
-Complex Vector::operator+(const Vector &A) {
-    auto *temp = new Complex();
-    for (int i = 0; i < A.N; i++){
-        temp[i] = A.vec[i]+vec[i];
+Vector Vector::operator+(const Vector &A) {
+    auto temp = new Vector(N);
+    for (int i = 0; i < N; i++){
+        temp->vec[i] = A.vec[i]+this->vec[i];
     }
     return *temp;
 }
 
 Vector Vector::operator-(const Vector &A) {
-    auto *temp = new Vector(N);
-    for (int i = 0; i < A.N; i++){
-        temp[i] = A.vec[i]-vec[i];
+    auto temp = new Vector(N);
+    for (int i = 0; i < N; i++){
+        temp->vec[i] = A.vec[i]-vec[i];
     }
-    return *temp;
-}
-
-Vector Vector::operator*(const Vector &A) {
-    auto *temp = new Vector(N);
-
-    return *temp;
-}
-
-Vector Vector::operator/(const Vector &A) {
-    auto *temp = new Vector(N);
     return *temp;
 }
 
@@ -156,9 +147,32 @@ void init(Complex *num, int N) {
     }
 }
 
+void initial(Complex &num) {
+    int val, img;
+    std::cout << "Enter the valid part of number:";
+    std::cin >> val;
+    num.set_val(val);
+    std::cout << "Enter the imaginary part of number:";
+    std::cin >> img;
+    num.set_img(img);
+}
+
+void init_v(Vector *v) {
+    Complex temp;
+    for (int i = 0; i < Vector::N; i++)  {
+        initial(temp);
+        v->set_vec(temp, i);
+    }
+}
+
+void init_n(){
+    std::cout << "Enter the number of elements in vectors:";
+    std::cin >> Vector::N;
+}
+
 int main() {
     int cou = 2;
-    auto *num = new Complex[cou];
+    auto num = new Complex[cou];
     int choice = 0;
     std::cout << "Please, choose operation:\n"
                  "1.Addition\n"
@@ -197,7 +211,12 @@ int main() {
         };
             break;
         case 5: {
-
+            init_n();
+            Vector vect(Vector::N);
+            init_v(&vect);
+            Vector vect2(Vector::N);
+            init_v(&vect2);
+            std::cout << vect+vect2;
         };
             break;
         case 6: {
