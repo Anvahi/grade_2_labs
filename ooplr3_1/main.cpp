@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 class Complex {
 private:
@@ -13,11 +14,11 @@ public:
         this->img = im;
     }
 
-    void set_val(int a) {
+    void set_val(double a) {
         val = a;
     }
 
-    void set_img(int b) {
+    void set_img(double b) {
         img = b;
     }
 
@@ -27,15 +28,6 @@ public:
 
     double get_img() {
         return img;
-    }
-
-    void print(Complex &a) {
-        if (a.img == 0)
-            std::cout << a.val << "\n";
-        if (a.img < 0)
-            std::cout << a.val << a.img << "i" << "\n";
-        else
-            std::cout << a.val << "+" << a.img << "i" << "\n";
     }
 
     friend std::ostream &operator<<(std::ostream &out, const Complex &a);
@@ -87,7 +79,7 @@ Complex Complex::operator/(const Complex &a) {
 Complex Complex::operator=(const Complex &a) {
     val = a.val;
     img = a.img;
-    return (*this);
+    return *this;
 }
 
 class Vector {
@@ -95,7 +87,7 @@ private:
     Complex *vec;
 public:
     static int N;
-    explicit Vector(int N = 2) {
+    Vector() {
         this->vec = new Complex[N];
     }
 
@@ -103,34 +95,61 @@ public:
         this->vec[i] = t;
     }
 
+    void abs(Complex &mod){
+        Complex sum;
+        for (int i = 0; i < Vector::N; i++){
+            sum = this->vec[i]*this->vec[i];
+        }
+        std::cout << "Vector module is sqrt(" << sum << ")\n";
+    }
+
+    friend std::istream &operator>>(std::istream &in, Vector &A);
+
     friend std::ostream &operator<<(std::ostream &out, const Vector &A);
 
     Vector operator+(const Vector &A);
 
     Vector operator-(const Vector &A);
 
+    Vector operator*(double a);
+
+    Vector operator*(const Vector &A);
+
     ~Vector() = default;
 };
 
+std::istream &operator>>(std::istream &in, Vector &A) {
+    int val, img;
+    for (int i = 0; i < Vector::N; i++){
+        std::cout << "Enter the real part of the number:";
+        in >> val;
+        A.vec[i].set_val(val);
+        std::cout << "Enter the imaginary part of the number:";
+        in >> img;
+        A.vec[i].set_img(img);
+    }
+    return in;
+}
+
 std::ostream &operator<<(std::ostream &out, const Vector &A) {
     for (int i = 0; i < Vector::N; i++) {
-        out << A.vec[i] << "\n";
+        out << A.vec[i];
     }
     return out;
 }
 
 Vector Vector::operator+(const Vector &A) {
-    auto temp = new Vector(N);
-    for (int i = 0; i < N; i++){
+    auto temp = new Vector();
+    for (int i = 0; i < Vector::N; i++){
         temp->vec[i] = A.vec[i]+this->vec[i];
     }
     return *temp;
 }
 
 Vector Vector::operator-(const Vector &A) {
-    auto temp = new Vector(N);
-    for (int i = 0; i < N; i++){
-        temp->vec[i] = A.vec[i]-vec[i];
+    auto temp = new Vector();
+    for (int i = 0; i < Vector::N; i++){
+        temp->vec[i] = this->vec[i]-A.vec[i];
     }
     return *temp;
 }
@@ -147,27 +166,32 @@ void init(Complex *num, int N) {
     }
 }
 
-void initial(Complex &num) {
-    int val, img;
-    std::cout << "Enter the valid part of number:";
-    std::cin >> val;
-    num.set_val(val);
-    std::cout << "Enter the imaginary part of number:";
-    std::cin >> img;
-    num.set_img(img);
-}
-
-void init_v(Vector *v) {
-    Complex temp;
-    for (int i = 0; i < Vector::N; i++)  {
-        initial(temp);
-        v->set_vec(temp, i);
-    }
-}
-
-void init_n(){
+int init_n(){
+    int n;
     std::cout << "Enter the number of elements in vectors:";
-    std::cin >> Vector::N;
+    std::cin >> n;
+    while (n < 2){
+        std::cout << "Please, try again!";
+        std::cin >> n;
+    }
+    return n;
+}
+
+int Vector::N = init_n();
+
+Vector Vector::operator*(double a) {
+    for (int i = 0; i < Vector::N; i++) {
+        this->vec[i].set_val(vec[i].get_val()*a);
+        this->vec[i].set_img(vec[i].get_img()*a);
+    }
+    return Vector();
+}
+
+Vector Vector::operator*(const Vector &A) {
+    for (int i = 0; i < Vector::N; i++){
+        this->vec[i] = this->vec[i]*A.vec[i];
+    }
+    return Vector();
 }
 
 int main() {
@@ -211,28 +235,41 @@ int main() {
         };
             break;
         case 5: {
-            init_n();
-            Vector vect(Vector::N);
-            init_v(&vect);
-            Vector vect2(Vector::N);
-            init_v(&vect2);
-            std::cout << vect+vect2;
+            auto vect = new Vector();
+            std::cin >> *vect;
+            auto vect2 = new Vector();
+            std::cin >> *vect2;
+            std::cout << vect->operator+(*vect2);
         };
             break;
         case 6: {
-
+            auto vect = new Vector();
+            std::cin >> *vect;
+            auto vect2 = new Vector();
+            std::cin >> *vect2;
+            std::cout << vect->operator-(*vect2);
         };
             break;
         case 7: {
-
+            auto vect = new Vector();
+            std::cin >> *vect;
+            std::cout << "Enter the number for mult:";
+            double k;
+            std::cin >> k;
+            std::cout << vect->operator*(k);
         };
             break;
         case 8: {
-
+            auto vect = new Vector();
+            std::cin >> *vect;
+            auto vect2 = new Vector();
+            std::cin >> *vect2;
+            std::cout << vect->operator*(*vect2);
         };
             break;
         case 9: {
-
+            auto vect = new Vector();
+            std::cin >> *vect;
         };
             break;
         default:
