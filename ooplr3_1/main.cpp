@@ -3,8 +3,8 @@
 
 class Complex {
 private:
-    double val;
-    double img;
+    double val = 0;
+    double img = 0;
 public:
     Complex() = default;
 
@@ -46,11 +46,11 @@ public:
 
 std::ostream &operator<<(std::ostream &out, const Complex &a) {
     if (a.img == 0)
-        out << a.val << "\n";
+        out << a.val;
     if (a.img < 0)
-        out << a.val << a.img << "i" << "\n";
+        out << a.val << a.img << "i";
     else
-        out << a.val << "+" << a.img << "i" << "\n";
+        out << a.val << "+" << a.img << "i";
     return out;
 }
 
@@ -94,10 +94,10 @@ public:
         this->vec[i] = t;
     }
 
-    void abs(Complex &mod){
+    void abs(){
         Complex sum;
         for (int i = 0; i < Vector::N; i++){
-            sum = this->vec[i]*this->vec[i];
+            sum = sum + this->vec[i]*this->vec[i];
         }
         std::cout << "Vector module is sqrt(" << sum << ")\n";
     }
@@ -132,25 +132,38 @@ std::istream &operator>>(std::istream &in, Vector &A) {
 
 std::ostream &operator<<(std::ostream &out, const Vector &A) {
     for (int i = 0; i < Vector::N; i++) {
-        out << A.vec[i];
+        out << A.vec[i] << "\n";
     }
     return out;
 }
 
 Vector Vector::operator+(const Vector &A) {
-    auto temp = new Vector();
     for (int i = 0; i < Vector::N; i++){
-        temp->vec[i] = A.vec[i]+this->vec[i];
+        this->vec[i] = A.vec[i]+this->vec[i];
     }
-    return *temp;
+    return *this;
 }
 
 Vector Vector::operator-(const Vector &A) {
-    auto temp = new Vector();
     for (int i = 0; i < Vector::N; i++){
-        temp->vec[i] = this->vec[i]-A.vec[i];
+        this->vec[i] = this->vec[i]-A.vec[i];
     }
-    return *temp;
+    return *this;
+}
+
+Vector Vector::operator*(double a) {
+    for (int i = 0; i < Vector::N; i++) {
+        this->vec[i].set_val(this->vec[i].get_val()*a);
+        this->vec[i].set_img(this->vec[i].get_img()*a);
+    }
+    return *this;
+}
+
+Vector Vector::operator*(const Vector &A) {
+    for (int i = 0; i < Vector::N; i++){
+        this->vec[i] = this->vec[i]*A.vec[i];
+    }
+    return *this;
 }
 
 void init(Complex *num, int N) {
@@ -177,21 +190,6 @@ int init_n(){
 }
 
 int Vector::N = init_n();
-
-Vector Vector::operator*(double a) {
-    for (int i = 0; i < Vector::N; i++) {
-        this->vec[i].set_val(vec[i].get_val()*a);
-        this->vec[i].set_img(vec[i].get_img()*a);
-    }
-    return Vector();
-}
-
-Vector Vector::operator*(const Vector &A) {
-    for (int i = 0; i < Vector::N; i++){
-        this->vec[i] = this->vec[i]*A.vec[i];
-    }
-    return Vector();
-}
 
 int main() {
     while (true) {
@@ -270,6 +268,7 @@ int main() {
             case 9: {
                 auto vect = new Vector();
                 std::cin >> *vect;
+                vect->abs();
             };
                 break;
             default:
