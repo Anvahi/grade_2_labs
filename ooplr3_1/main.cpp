@@ -1,6 +1,5 @@
 #include <iostream>
-#include <fstream>
-#include <cmath>
+#include <string>
 
 class Complex {
 private:
@@ -195,86 +194,99 @@ Vector Vector::operator*(const Vector &A) {
 }
 
 int main() {
-    int cou = 2;
-    auto num = new Complex[cou];
-    int choice = 0;
-    std::cout << "Please, choose operation:\n"
-                 "1.Addition\n"
-                 "2.Subtraction\n"
-                 "3.Multiplication\n"
-                 "4.Division\n"
-                 "5.Vector addition\n"
-                 "6.Subtraction of vectors\n"
-                 "7.Multiplication of a vector by a number\n"
-                 "8.Calculation of the scalar product of vectors\n"
-                 "9.Vector module\n";
-    std::cin >> choice;
-    while (choice < 1 || choice > 9) {
-        std::cout << "Please, try again!\n";
+    while (true) {
+        int cou = 2;
+        auto num = new Complex[cou];
+        int choice = 0;
+        std::cout << "Please, choose operation:\n"
+                     "1.Addition\n"
+                     "2.Subtraction\n"
+                     "3.Multiplication\n"
+                     "4.Division\n"
+                     "5.Vector addition\n"
+                     "6.Subtraction of vectors\n"
+                     "7.Multiplication of a vector by a number\n"
+                     "8.Calculation of the scalar product of vectors\n"
+                     "9.Vector module\n";
         std::cin >> choice;
+        while (choice < 1 || choice > 9) {
+            std::cout << "Please, try again!\n";
+            std::cin >> choice;
+        }
+        switch (choice) {
+            case 1: {
+                init(num, cou);
+                std::cout << num[0] + num[1];
+            };
+                break;
+            case 2: {
+                init(num, cou);
+                std::cout << num[0] - num[1];
+            };
+                break;
+            case 3: {
+                init(num, cou);
+                std::cout << num[0] * num[1];
+            };
+                break;
+            case 4: {
+                init(num, cou);
+                std::cout << num[0] / num[1];
+            };
+                break;
+            case 5: {
+                auto vect = new Vector();
+                std::cin >> *vect;
+                auto vect2 = new Vector();
+                std::cin >> *vect2;
+                std::cout << vect->operator+(*vect2);
+            };
+                break;
+            case 6: {
+                auto vect = new Vector();
+                std::cin >> *vect;
+                auto vect2 = new Vector();
+                std::cin >> *vect2;
+                std::cout << vect->operator-(*vect2);
+            };
+                break;
+            case 7: {
+                auto vect = new Vector();
+                std::cin >> *vect;
+                std::cout << "Enter the number for mult:";
+                double k;
+                std::cin >> k;
+                std::cout << vect->operator*(k);
+            };
+                break;
+            case 8: {
+                auto vect = new Vector();
+                std::cin >> *vect;
+                auto vect2 = new Vector();
+                std::cin >> *vect2;
+                std::cout << vect->operator*(*vect2);
+            };
+                break;
+            case 9: {
+                auto vect = new Vector();
+                std::cin >> *vect;
+            };
+                break;
+            default:
+                break;
+        }
+        delete[] num;
+        std::string again;
+        std::cout << "Do you want to continue?(yes/no)\n";
+        std::cin >> again;
+        while (again != "yes" && again != "no"){
+            std::cout << "Please, try again!\n";
+            std::cin >> again;
+        }
+        if (again == "yes")
+            continue;
+        else if (again == "no")
+            break;
     }
-    switch (choice) {
-        case 1: {
-            init(num, cou);
-            std::cout << num[0] + num[1];
-        };
-            break;
-        case 2: {
-            init(num, cou);
-            std::cout << num[0] - num[1];
-        };
-            break;
-        case 3: {
-            init(num, cou);
-            std::cout << num[0] * num[1];
-        };
-            break;
-        case 4: {
-            init(num, cou);
-            std::cout << num[0] / num[1];
-        };
-            break;
-        case 5: {
-            auto vect = new Vector();
-            std::cin >> *vect;
-            auto vect2 = new Vector();
-            std::cin >> *vect2;
-            std::cout << vect->operator+(*vect2);
-        };
-            break;
-        case 6: {
-            auto vect = new Vector();
-            std::cin >> *vect;
-            auto vect2 = new Vector();
-            std::cin >> *vect2;
-            std::cout << vect->operator-(*vect2);
-        };
-            break;
-        case 7: {
-            auto vect = new Vector();
-            std::cin >> *vect;
-            std::cout << "Enter the number for mult:";
-            double k;
-            std::cin >> k;
-            std::cout << vect->operator*(k);
-        };
-            break;
-        case 8: {
-            auto vect = new Vector();
-            std::cin >> *vect;
-            auto vect2 = new Vector();
-            std::cin >> *vect2;
-            std::cout << vect->operator*(*vect2);
-        };
-            break;
-        case 9: {
-            auto vect = new Vector();
-            std::cin >> *vect;
-        };
-            break;
-        default:
-            break;
-    }
-    delete[] num;
     return 0;
 }
