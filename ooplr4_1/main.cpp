@@ -53,11 +53,30 @@ public:
         this->body_capacity = a;
     }
 
+    void print_t() {
+        cout << "\nCar brand is " << this->Car_make << ".\n";
+        cout << "The number of cylinders is " << this->cylinder << ".\n";
+        cout << "Power is " << this->power << ".\n";
+        cout << "Body capacity is " << this->body_capacity << ".\n";
+    }
+
     ~truck() = default;
 };
 
 int main() {
     auto c = new truck("BMW", 6, 200, 40);
+    c->print();
+    c->print_t();
+
+    string temp;
+    cout << "Enter the new car make:";
+    cin >> temp;
+    c->set_make(temp);
+    cout << "Enter new body capacity:";
+    cin >> temp;
+    c->set_capas(stoi(temp));
+
+    c->print_t();
 
     return 0;
 }
