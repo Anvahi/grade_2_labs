@@ -11,12 +11,11 @@ using namespace std;
 //Написать программу, демонстрирующую все разработанные элементы класса.
 
 class car {
-private:
-public:
+protected:
     string Car_make;
     int cylinder;
     int power;
-
+public:
     car() = default;
 
     void print() {

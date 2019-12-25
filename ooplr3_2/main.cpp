@@ -17,7 +17,6 @@ private:
     string group = "";
     string surname = "";
     double mark = 0;
-    //list <student> st;
 public:
     sheet() = default;
 

@@ -2,31 +2,25 @@
 
 using namespace std;
 
-//Очередь. Вставка элемента. Удаление. Поиск минимального. Очистка. Поиск количества вхождений заданного элемента. Печать
+// Очередь. Вставка элемента. Удаление. Поиск минимального. Очистка.
+// Поиск количества вхождений заданного элемента. Печать
 // double
 // Линейный список
 // Student: Фамилия, Имя, Отчество, Дата рождения,
 
 template<class type>
 class que {
-    struct Element { // структура представляющая единичный элемент очереди
-        type data; // информационное поле (сюда линейный список)
-        Element *next; // указатель на следующий элемент
+    struct Element {
+        type data;
+        Element *next;
     };
 private:
     Element *Head; // указатель на голову
-    Element *Tail; // указатель на текущий элемент
+    Element *Tail;
 public:
     int length = 0; // количество элементов
 
     que() = default;
-
-    que(type data) {
-        Head = nullptr;
-        Tail = nullptr;
-        length = 0;
-        Add(data, 1);
-    }
 
     void Add(type data) {
         auto insert = new Element;
@@ -74,26 +68,26 @@ public:
             Element *temp = Head;
             min = temp->data;
             for (int i = 0; i < length; i++) {
-                temp = temp->next;
-                if (temp->data < min)
-                    min = temp->data;
+                if (temp != Tail) {
+                    temp = temp->next;
+                    if (temp->data < min)
+                        min = temp->data;
+                } else
+                    break;
             }
         } else
             cout << "Queue is empty\n";
     }
 
-    void find_min(type f, int &count) {
-        if (length != 0) {
-            Element *temp = Head;
-            for (int i = 0; i < length; i++) {
-                if (temp->data == f) {
-                    count++;
-                    temp = temp->next;
-                } else
-                    temp = temp->next;
-            }
-        } else
-            cout << "Queue is empty\n";
+    void find_count(type f, int &count) {
+        Element *temp = Head;
+        for (int i = 0; i < length; i++) {
+            if (temp->data == f) {
+                count++;
+                temp = temp->next;
+            } else
+                temp = temp->next;
+        }
     }
 
     ~que() = default;
@@ -200,23 +194,50 @@ int main() {
             "2. class\n";
     cin >> choice;
     switch (choice) {
-        case 1:
-            que <double> f;
+        case 1: {
+            que<double> f;
             while (true) {
                 cout << "If you want to add elements - enter the number, else type \"no\"\n";
                 cin >> temp;
                 if (temp == "no")
                     break;
                 else
-                    f.Add(stoi(temp));
+                    f.Add(stod(temp));
             }
             cout << endl;
+            int ch = 0;
+            cout << "What are you want to do?\n"
+                    "1. Find minimum\n"
+                    "2. Find count here of el\n";
+            cin >> ch;
+            switch (ch) {
+                case 1: {
+                    double min = INT32_MAX;
+                    f.find_min(min);
+                    cout << "\nMin el is " << min << ".\n";
+                }
+                    break;
+                case 2: {
+                    double k;
+                    int count = 0;
+                    cout << "Enter the el for find:";
+                    cin >> k;
+                    f.find_count(k, count);
+                    cout << "Count of this elements is " << count << ".\n";
+                }
+                    break;
+                default:
+                    break;
+            }
             f.out();
+        }
             break;
-//        case 2: ;
-//            break;
-//        default:
-//            break;
+        case 2: {
+
+        }
+            break;
+        default:
+            break;
     }
     return 0;
 }
