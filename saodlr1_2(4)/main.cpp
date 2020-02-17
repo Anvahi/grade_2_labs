@@ -1,55 +1,56 @@
 #include <iostream>
-
-#define n 5
 using namespace std;
+//
+//Проведите эксперимент, подтверждающий или
+//опровергающий утверждение о том, что в среднем
+//быстрая сортировка эффективнее пирамидальной.
+//
 
-struct item {
-    int key;
-};
-
-void HeapSort(item a[]) {
-    int left, right;
-    item temp;
-    void sift(item [], int, int);
-    left = (n - 1) / 2 + 1;
-    right = n - 1;
-    while (left > 1) {
-        left--;
-        sift(a, left, right);
+void heapify(int arr[], int n, int i) {
+    int largest = i;
+    // Инициализируем наибольший элемент как корень
+    int l = 2 * i + 1; // левый = 2*i + 1
+    int r = 2 * i + 2; // правый = 2*i + 2
+    // Если левый дочерний элемент больше корня
+    if (l < n && arr[l] > arr[largest])
+        largest = l;
+    // Если правый дочерний элемент больше, чем самый большой элемент на данный момент
+    if (r < n && arr[r] > arr[largest])
+        largest = r;
+    // Если самый большой элемент не корень
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+    // Рекурсивно преобразуем в двоичную кучу затронутое поддерево
+        heapify(arr, n, largest);
     }
-    while (right > 1) {
-        temp = a[1];
-        a[1] = a[right];
-        a[right] = temp;
-        right--;
-        sift(a, left, right);
+}
+
+// Основная функция, выполняющая пирамидальную сортировку
+void heapSort(int arr[], int n) {
+    // Построение кучи (перегруппируем массив)
+    for (int i = n/2-1; i >= 0; i--)
+        heapify(arr, n, i);
+    // Один за другим извлекаем элементы из кучи
+    for (int i = n-1; i >= 0; i--) {
+        // Перемещаем текущий корень в конец
+        swap(arr[0], arr[i]);
+        // вызываем процедуру heapify на уменьшенной куче
+        heapify(arr, i, 0);
     }
 }
 
 int main() {
-    item a[n];
+    int n = 0;
+    cout << "Enter n:";
+    cin >> n;
+    int arr[n];
     cout << "Please, enter:\n";
     for (int i = 0; i < n; i++)
-        cin >> a[i].key;
-    HeapSort(a);
-    for (int i = 0; i < n; i++)
-        cout << a[i].key;
-}
-
-void sift(item a[], int left, int right) {
-    int i, j;
-    item temp;
-    i = left;
-    j = 2 * i;
-    temp = a[i];
-    while (j <= right) {
-        if (j < right)
-            if (a[j].key < a[j + 1].key) j++;
-        if (temp.key >= a[j].key) goto L1;
-        a[i] = a[j];
-        i = j;
-        j = 2 * i;
-    }
-    L1:
-    a[i] = temp;
+        cin >> arr[i];
+    heapSort(arr, n);
+    cout << "Sorted array is \n";
+    for (int i = 0; i < n; ++i)
+        cout << arr[i] << " ";
+    cout << "\n";
+    return 0;
 }
